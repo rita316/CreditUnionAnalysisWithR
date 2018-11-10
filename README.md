@@ -1,11 +1,11 @@
 # CreditUnionAnalysisWithR
 A course project for IS 590 Predictive Analysis in Finance in Fall 2018. 
 
-## Team member:
-Xinzhe Deng
-Han Li
-Lan Li
-Te Lin
+## Team member (alphabetically):
+ Xinzhe Deng
+ Han Li 
+ Lan Li
+ Te Lin
 
 ## This project consists of 7 sub projects:
 1. Data Cleaning
