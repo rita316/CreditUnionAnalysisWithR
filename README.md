@@ -1,5 +1,6 @@
 # CreditUnionAnalysisWithR
 A course project for IS 590 Predictive Analysis in Finance in Fall 2018. 
+We use SCRUM for planning on Trello.
 
 ## Team members (alphabetically):
 Xinzhe Deng, Han Li, Lan Li and Te Lin
@@ -12,3 +13,4 @@ Xinzhe Deng, Han Li, Lan Li and Te Lin
 5. Modeling the Next Best Product
 6. Visualization for Churn
 7. Visualization for the Next Best Product
+
