@@ -62,13 +62,38 @@ open_user$Sept.closed[(open_user$ClosedDate > as.Date('2018-08-31')) & (open_use
 open_user$Oct.closed[(open_user$ClosedDate > as.Date('2018-09-30')) & (open_user$ClosedDate <= as.Date('2018-10-31')) %in% TRUE] = 1
 open_user$Open[is.na(open_user$ClosedDate) %in% TRUE] = 1
 
+active_user = open_user[open_user$Open==1,]
+unactive_user = open_user[!open_user$Open==1,]
+active_user_train = active_user[sample(nrow(active_user),size = nrow(unactive_user)),]
+origin = rbind(active_user_train,unactive_user)
+origin= origin[,-c(42,43,44,45)]
+origin = origin[,-c(1,3,4)]
+origin[is.na(origin)]<-0
+
+#split train and test set
+smp_size <- floor(0.75 * nrow(origin))
+set.seed(123)
+train_index <- sample(seq_len(nrow(origin)), size = smp_size)
+train <- origin[train_index, ]
+test <- origin[-train_index, ]
+train$ZipCode_Validated = as.factor(train$ZipCode_Validated)
+test$ZipCode_Validated = as.factor(test$ZipCode_Validated)
 
 
-library(ISLR)
-typeof(open_user$closed)
-open_user$closed =  as.factor(open_user$closed)
-class(open_user$closed)
-glm.fit = glm(closed~., data = open_user, family=binomial)
+train_x = data.matrix(train[,-39])
+train_y = data.matrix(train[,39])
+test_x = data.matrix(test[,-39])
+test_y = data.matrix(test[,39])
 
-str()
 
+#logistic regression
+library(glmnet)
+glm.fit = cv.glmnet(train_x,train_y,family = "binomial",type.measure = "class")
+plot(glm.fit)
+pred = predict(glm.fit,newx=train_x,s="lambda.min",type="class")
+accuracy_train = sum(pred==train_y)/length(train_y)
+accuracy_train
+
+pred_test = predict(glm.fit,newx=test_x,s="lambda.1se",type="class")
+accuracy_test = sum(pred_test==test_y)/length(test_y)
+accuracy_test
